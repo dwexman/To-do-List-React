@@ -1,24 +1,45 @@
-import React from "react";
+import React , { useState } from "react";
 
-//include images into your bundle
+
+
 import rigoImage from "../../img/rigo-baby.jpg";
 
-//create your first component
+
 const Home = () => {
+	const [inputValue, setInputValue] = useState ("");
+	const [tareas, setTareas] = useState ([]); 
+
+	function handleChange(event){
+		setInputValue(event.target.value);
+	  
+	}
+
+	function handleKey(event){
+		if (event.key=="Enter"){
+			setTareas([...tareas, inputValue]);
+			setInputValue("");
+		    
+		}	
+	}
+
+	function handleClick(index){
+		tareas.splice(index, 1)
+		const auxiliar = [...tareas]
+		setTareas(auxiliar)
+	}
+
 	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div className="container">
+			<h1>To Do List</h1>
+			<ul>
+				<li><input type="text" placeholder="Que tengo que hacer" value={inputValue} onChange={handleChange} onKeyDown={handleKey}></input></li>
+				{
+					tareas.map((tarea, index)=>
+						<li>{tarea} <i class="fas fa-window-close float-end" onClick={event=>handleClick(index)}></i> </li>
+						)
+				}
+			</ul>
+			<div>4 tareas pendientes</div>
 		</div>
 	);
 };
